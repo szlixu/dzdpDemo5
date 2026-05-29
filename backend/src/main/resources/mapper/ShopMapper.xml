@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dzdp.mapper.ShopMapper">
+
+    <resultMap id="BaseResultMap" type="com.dzdp.entity.Shop">
+        <id column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="name" property="name"/>
+        <result column="address" property="address"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
+        <result column="phone" property="phone"/>
+        <result column="cover_url" property="coverUrl"/>
+        <result column="avg_price" property="avgPrice"/>
+        <result column="rating" property="rating"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, category_id, name, address, longitude, latitude, phone,
+        cover_url, avg_price, rating, create_time, update_time, is_deleted
+    </sql>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM tb_shop
+        <where>
+            is_deleted = 0
+            <if test="categoryId != null">
+                AND category_id = #{categoryId}
+            </if>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="minPrice != null">
+                AND avg_price &gt;= #{minPrice}
+            </if>
+            <if test="maxPrice != null">
+                AND avg_price &lt;= #{maxPrice}
+            </if>
+            <if test="minRating != null">
+                AND rating &gt;= #{minRating}
+            </if>
+            <if test="maxRating != null">
+                AND rating &lt;= #{maxRating}
+            </if>
+            <if test="address != null and address != ''">
+                AND address LIKE CONCAT('%', #{address}, '%')
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  sql:
+    init:
+      mode: never
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      encoding: UTF-8
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://118.145.239.208:3306/dzdp5?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: dbadmin
+    password: dbadmin@2026
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.dzdp.entity
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com.dzdp: debug
